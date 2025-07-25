@@ -32,5 +32,15 @@ class APIService {
             }
         }.resume()
     }
+    
+    func fetchUsersAsync() async throws -> [User]{
+        guard let url = URL(string: "https://core-apis.a1apps.co/ios/interview-details") else{
+            throw URLError(.badURL)
+        }
+        let (data, _) = try await URLSession.shared.data(from: url)
+        let decoded = try JSONDecoder().decode(APIResponse.self, from: data)
+        return decoded.data
+        
+    }
  
 }

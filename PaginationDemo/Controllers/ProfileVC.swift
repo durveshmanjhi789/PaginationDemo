@@ -21,10 +21,23 @@ class ProfileVC: UIViewController {
         
         setupTableView()
         setupSpinner()
-        viewModel.loadData {userCount in 
-            self.tableView.reloadData()
-            self.userCount.text = "Users Data : \(userCount)"
+//        viewModel.loadData {userCount in 
+//            self.tableView.reloadData()
+//            self.userCount.text = "Users Data : \(userCount)"
+//        }
+        
+        Task{
+            do{
+                let count = try await viewModel.loadDataAsync()
+                self.tableView.reloadData()
+                self.userCount.text = "Users Data : \(count)"
+            }catch{
+                print("Error loading users: \(error.localizedDescription)")
+                self.userCount.text = "Failed to load users"
+            }
         }
+        
+        
     }
     
     private func setupTableView() {

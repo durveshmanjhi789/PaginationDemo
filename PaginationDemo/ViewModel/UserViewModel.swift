@@ -42,4 +42,12 @@ class UserViewModel {
 
     }
     
+    func loadDataAsync() async throws -> Int{
+        let users = try await APIService.shared.fetchUsersAsync()
+        self.allUsers = users
+        self.visibleUsers = []
+        self.loadMore()
+        return users.count
+    }
+    
 }
