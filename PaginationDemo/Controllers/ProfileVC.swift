@@ -28,7 +28,7 @@ class ProfileVC: UIViewController {
         
         Task{
             do{
-                let count = try await viewModel.loadDataAsync()
+                let count = try await viewModel.loadData()
                 self.tableView.reloadData()
                 self.userCount.text = "Users Data : \(count)"
             }catch{

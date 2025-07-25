@@ -9,6 +9,11 @@ import Foundation
 
 class UserViewModel {
 
+    var service:UserService
+    init(service:UserService =  UserServiceFactory.createServices()){
+        self.service = service
+    }
+    
     var allUsers: [User] = []
     var visibleUsers: [User] = []
     private var currentIndex = 0
@@ -17,22 +22,22 @@ class UserViewModel {
     var hasmore:Bool{
         return currentIndex < allUsers.count
     }
-    func loadData(completion:@escaping(_ userCount:Int) ->Void){
-        APIService.shared.fetchUsers { result in
-            DispatchQueue.main.async{
-                switch result{
-                case .success(let users):
-                    self.allUsers = users
-                    self.visibleUsers = []
-                    self.loadMore()
-                    completion(users.count)
-                case .failure(let error):
-                    print("Failed to fetch users:", error)
-                    completion(0)
-                }
-            }
-        }
-    }
+//    func loadData(completion:@escaping(_ userCount:Int) ->Void){
+//        APIService.shared.fetchUsers { result in
+//            DispatchQueue.main.async{
+//                switch result{
+//                case .success(let users):
+//                    self.allUsers = users
+//                    self.visibleUsers = []
+//                    self.loadMore()
+//                    completion(users.count)
+//                case .failure(let error):
+//                    print("Failed to fetch users:", error)
+//                    completion(0)
+//                }
+//            }
+//        }
+//    }
     func loadMore(){
         let nextIndex = currentIndex + pageSize
         guard currentIndex < allUsers.count else{ return }
@@ -42,8 +47,9 @@ class UserViewModel {
 
     }
     
-    func loadDataAsync() async throws -> Int{
-        let users = try await APIService.shared.fetchUsersAsync()
+    func loadData() async throws -> Int{
+//        let users = try await APIService.shared.fetchUsers()
+        let users = try await service.fetchUsers()
         self.allUsers = users
         self.visibleUsers = []
         self.loadMore()

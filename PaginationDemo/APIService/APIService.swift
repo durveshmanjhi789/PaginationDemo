@@ -7,33 +7,34 @@
 
 import Foundation
 
-class APIService {
-    static let shared = APIService()
+class APIService:UserService {
+ 
+    //static let shared = APIService()
     
-    private init(){}
+    //private init(){}
     
-    func fetchUsers( completion: @escaping (Result<[User], Error>) -> Void) {
-        guard let url = URL(string: "https://core-apis.a1apps.co/ios/interview-details") else {
-                   return
-               }
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let data = data else { return }
-            do {
-                let decoded = try JSONDecoder().decode(APIResponse.self, from: data)
-                completion(.success(decoded.data))
-            } catch {
-                print("Decoding error:", error)
-                completion(.failure(error))
-            }
-        }.resume()
-    }
+//    func fetchUsers( completion: @escaping (Result<[User], Error>) -> Void) {
+//        guard let url = URL(string: "https://core-apis.a1apps.co/ios/interview-details") else {
+//                   return
+//               }
+//        URLSession.shared.dataTask(with: url) { data, _, error in
+//            if let error = error {
+//                completion(.failure(error))
+//                return
+//            }
+//            
+//            guard let data = data else { return }
+//            do {
+//                let decoded = try JSONDecoder().decode(APIResponse.self, from: data)
+//                completion(.success(decoded.data))
+//            } catch {
+//                print("Decoding error:", error)
+//                completion(.failure(error))
+//            }
+//        }.resume()
+//    }
     
-    func fetchUsersAsync() async throws -> [User]{
+    func fetchUsers() async throws -> [User]{
         guard let url = URL(string: "https://core-apis.a1apps.co/ios/interview-details") else{
             throw URLError(.badURL)
         }
